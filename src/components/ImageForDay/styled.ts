@@ -36,9 +36,7 @@ export const Logo = styled.img`
   margin: 20px;
 `;
 
-export const Btn = styled(Button)`
-  margin-top: 80px;
-`;
+export const Btn = styled(Button)``;
 
 export const Content = styled.div`
   display: flex;
@@ -46,4 +44,9 @@ export const Content = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 60%;
+`;
+export const ContentInputs = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 `;

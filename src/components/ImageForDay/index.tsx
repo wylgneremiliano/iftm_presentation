@@ -2,6 +2,7 @@ import {
   Btn,
   Container,
   Content,
+  ContentInputs,
   Logo,
   Text,
   TextItalic,
@@ -15,56 +16,72 @@ import { useState } from "react";
 import moment from "moment";
 
 import { getImageForDay } from "../../services/ImageForDay";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../../services/query";
+import YoutubeEmbed from "./components/player";
 
 const ImageForDay = () => {
   const [date, setDate] = useState(moment().format("yyyy-MM-DD"));
-  const [data, setData] = useState({
-    copyright: "",
-    date: "",
-    explanation: "",
-    hdurl: "",
-    media_type: "",
-    service_version: "",
-    title: "",
-    url: "",
-  });
+  const [dateForButton, setDateForButton] = useState(
+    moment().format("yyyy-MM-DD")
+  );
+  const { data } = useQuery(["imageForDay", dateForButton], () =>
+    getImageForDay(dateForButton)
+  );
   const onChangeAndFormatDate = async (e: string | null) => {
     const dateFormated = moment(e).format("yyyy-MM-DD");
     setDate(dateFormated);
   };
-
-  const onSubmit = async () => {
-    const response = await getImageForDay(date);
-    setData(response);
-  };
+  const getImageForDayMutation = useMutation(
+    ["imageForDay"],
+    () => getImageForDay(date),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["imageForDay"]),
+    }
+  );
+  async function onSubmit() {
+    setDateForButton(date);
+    getImageForDayMutation.mutate();
+  }
   return (
     <Container>
       <Title>Selecione uma data para ver a imagem do dia </Title>
-
-      <MobileDateTimePicker
-        inputFormat="DD/MM/yyyy"
-        renderInput={(params) => (
-          <TextField
-            style={{ background: "#fff", borderRadius: 5, marginBottom: 20 }}
-            {...params}
+      <ContentInputs>
+        <MobileDateTimePicker
+          inputFormat="DD/MM/yyyy"
+          renderInput={(params) => (
+            <TextField
+              style={{ background: "#fff", borderRadius: 5, marginRight: 10 }}
+              {...params}
+            />
+          )}
+          onChange={(e) => onChangeAndFormatDate(e)}
+          value={date}
+        />
+        <Btn
+          variant="contained"
+          onClick={() => onSubmit()}
+          style={{
+            backgroundColor: "#bd93f9",
+            paddingTop: 15,
+            paddingBottom: 15,
+            fontWeight: "bold",
+          }}
+        >
+          Ver nova imagem
+        </Btn>
+      </ContentInputs>
+      <Content>
+        {data?.media_type == "image" && (
+          <Logo
+            src={data?.hdurl || nasaLogo}
+            alt="nasa-logo"
+            style={{ width: "800px", height: "600px", objectFit: "contain" }}
           />
         )}
-        onChange={(e) => onChangeAndFormatDate(e)}
-        value={date}
-      />
-      <Btn
-        variant="contained"
-        onClick={() => onSubmit()}
-        style={{ backgroundColor: "#bd93f9" }}
-      >
-        Ver nova imagem
-      </Btn>
-      <Content>
-        <Logo
-          src={data?.hdurl || nasaLogo}
-          alt="nasa-logo"
-          style={{ width: "800px", height: "600px", objectFit: "contain" }}
-        />
+
+        {data?.media_type == "video" && <YoutubeEmbed embedId={data?.url} />}
+
         <Title>{data?.title}</Title>
         <Text>{data?.explanation}</Text>
         <TextItalic>{data?.copyright}</TextItalic>

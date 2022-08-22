@@ -4,7 +4,7 @@ import { getPosition } from "../services/ISSPosition";
 const useISS = () => {
   return useQuery(["issPosition"], () => getPosition(), {
     select: (response) => response,
-    refetchInterval: 10000,
+    refetchInterval: 3000,
   });
 };
 
