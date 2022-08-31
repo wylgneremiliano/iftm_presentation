@@ -83,11 +83,14 @@ const ImageForDay = () => {
         {data?.media_type === "video" && <YoutubeEmbed embedId={data?.url} />}
 
         {data?.media_type !== "image" && data?.media_type !== "video" && (
-          <Logo
-            src={nasaLogo}
-            alt="nasa-logo"
-            style={{ width: "800px", height: "600px", objectFit: "contain" }}
-          />
+          <>
+            <Logo
+              src={nasaLogo}
+              alt="nasa-logo"
+              style={{ width: "700px", height: "500px", objectFit: "contain" }}
+            />
+            <Title>Sem imagem/vídeo nessa data.</Title>
+          </>
         )}
         <Title>{data?.title}</Title>
         <Text>{data?.explanation}</Text>
