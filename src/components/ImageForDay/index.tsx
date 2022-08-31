@@ -45,7 +45,7 @@ const ImageForDay = () => {
   }
   return (
     <Container>
-      <Title>Selecione uma data para ver a imagem do dia </Title>
+      <Title>Selecione uma data para ver a imagem/vídeo do dia </Title>
       <ContentInputs>
         <MobileDateTimePicker
           inputFormat="DD/MM/yyyy"
@@ -72,16 +72,23 @@ const ImageForDay = () => {
         </Btn>
       </ContentInputs>
       <Content>
-        {data?.media_type == "image" && (
+        {data?.media_type === "image" && (
           <Logo
-            src={data?.hdurl || nasaLogo}
+            src={data?.url || nasaLogo}
             alt="nasa-logo"
             style={{ width: "800px", height: "600px", objectFit: "contain" }}
           />
         )}
 
-        {data?.media_type == "video" && <YoutubeEmbed embedId={data?.url} />}
+        {data?.media_type === "video" && <YoutubeEmbed embedId={data?.url} />}
 
+        {data?.media_type !== "image" && data?.media_type !== "video" && (
+          <Logo
+            src={nasaLogo}
+            alt="nasa-logo"
+            style={{ width: "800px", height: "600px", objectFit: "contain" }}
+          />
+        )}
         <Title>{data?.title}</Title>
         <Text>{data?.explanation}</Text>
         <TextItalic>{data?.copyright}</TextItalic>
