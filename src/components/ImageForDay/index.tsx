@@ -36,7 +36,8 @@ const ImageForDay = () => {
     ["imageForDay"],
     () => getImageForDay(date),
     {
-      onSuccess: () => queryClient.invalidateQueries(["imageForDay"]),
+      onSuccess: () =>
+        queryClient.invalidateQueries(["imageForDay", dateForButton]),
     }
   );
   async function onSubmit() {
