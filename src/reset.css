@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #bd93f9 #282a36;
+}
+::selection {
+  background: #bd93f9;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #282a36;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #bd93f9;
+  border-radius: 10px;
+}
+body {
+  background-color: #44475a;
+  color: #f8f8f2;
+  font-family: "Roboto" sans-serif;
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+}
