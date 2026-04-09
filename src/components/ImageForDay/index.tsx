@@ -47,7 +47,7 @@ const ImageForDay = () => {
   }
   return (
     <Container>
-      <Title>Selecione uma data para ver a imagem/vídeo do dia </Title>
+      <Title>Coloque uma data para ver a imagem/vídeo do dia </Title>
       <ContentInputs>
         <MobileDateTimePicker
           inputFormat="DD/MM/yyyy"
